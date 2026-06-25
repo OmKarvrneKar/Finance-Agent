@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Wallet, Upload, List, MessageSquare, PieChart } from 'lucide-react';
+import { Wallet, Upload, List, MessageSquare, PieChart, Repeat } from 'lucide-react';
 import './Navigation.css';
 
 const Navigation = () => {
@@ -23,6 +23,10 @@ const Navigation = () => {
           <NavLink to="/ask" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
             <MessageSquare size={18} />
             <span>Ask AI</span>
+          </NavLink>
+          <NavLink to="/subscriptions" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+            <Repeat size={18} />
+            <span>Subscriptions</span>
           </NavLink>
           <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
             <PieChart size={18} />

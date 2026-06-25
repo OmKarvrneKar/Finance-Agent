@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Transactions from './pages/Transactions';
 import AskAI from './pages/AskAI';
 import Dashboard from './pages/Dashboard';
+import Subscriptions from './pages/Subscriptions';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/ask" element={<AskAI />} />
+            <Route path="/subscriptions" element={<Subscriptions />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>

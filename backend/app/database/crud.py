@@ -1,0 +1,35 @@
+from sqlalchemy.orm import Session
+from .db import Transaction
+from typing import List, Dict, Any, Tuple
+
+def create_transactions(db: Session, transactions: List[Dict[str, Any]]) -> List[Transaction]:
+    db_transactions = []
+    for tx in transactions:
+        db_tx = Transaction(
+            date=tx['date'],
+            description=tx['description'],
+            amount=tx['amount'],
+            transaction_type=tx['transaction_type'],
+            category=tx['category'],
+            subcategory=tx.get('subcategory'),
+            is_recurring=tx.get('is_recurring', False),
+            raw_text=tx.get('raw_text')
+        )
+        db.add(db_tx)
+        db_transactions.append(db_tx)
+    db.commit()
+    for db_tx in db_transactions:
+        db.refresh(db_tx)
+    return db_transactions
+
+def get_transactions_paginated(db: Session, skip: int = 0, limit: int = 100, category: str = None, transaction_type: str = None) -> Tuple[List[Transaction], int]:
+    query = db.query(Transaction)
+    if category:
+        query = query.filter(Transaction.category == category)
+    if transaction_type:
+        query = query.filter(Transaction.transaction_type == transaction_type)
+        
+    query = query.order_by(Transaction.date.desc(), Transaction.id.desc())
+    total = query.count()
+    transactions = query.offset(skip).limit(limit).all()
+    return transactions, total

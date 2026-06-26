@@ -141,7 +141,10 @@ def get_subscriptions(db: Session = Depends(get_db)):
     from app.database.db import Transaction
     import datetime
     
-    recurring_txs = db.query(Transaction).filter(Transaction.is_recurring == True).all()
+    recurring_txs = db.query(Transaction).filter(
+        Transaction.is_recurring == True,
+        Transaction.transaction_type == 'debit'
+    ).all()
     
     grouped = {}
     for tx in recurring_txs:
@@ -157,29 +160,39 @@ def get_subscriptions(db: Session = Depends(get_db)):
         total_amount = sum(tx.amount for tx in txs)
         avg_amount = total_amount / occurrences
         
-        try:
-            sorted_dates = sorted([datetime.datetime.strptime(tx.date, "%Y-%m-%d").date() for tx in txs if tx.date])
-        except Exception:
-            sorted_dates = []
-            
-        if occurrences > 1 and len(sorted_dates) > 1:
-            total_days = (sorted_dates[-1] - sorted_dates[0]).days
-            avg_days = total_days / (occurrences - 1)
-        else:
-            avg_days = 30 # Default to monthly
-            
-        if avg_days <= 10:
+        valid_dates = []
+        for tx in txs:
+            if tx.date is not None:
+                if hasattr(tx.date, "isoformat"):
+                    valid_dates.append(tx.date)
+                elif isinstance(tx.date, str):
+                    try:
+                        valid_dates.append(datetime.datetime.strptime(tx.date, "%Y-%m-%d").date())
+                    except ValueError:
+                        pass
+        
+        sorted_dates = sorted(valid_dates)
+        
+        distinct_months = len(set((d.year, d.month) for d in valid_dates))
+        distinct_months = distinct_months if distinct_months > 0 else 1
+        
+        charges_per_month = occurrences / distinct_months
+        
+        if charges_per_month >= 3.5:
             frequency = "Weekly"
-            monthly_cost = avg_amount * (365/7/12)
-        elif avg_days <= 45:
+            monthly_cost = avg_amount * 4.33
+        elif charges_per_month >= 1.5:
+            frequency = "Bi-weekly"
+            monthly_cost = avg_amount * 2.16
+        elif charges_per_month >= 0.8:
             frequency = "Monthly"
             monthly_cost = avg_amount
-        elif avg_days <= 120:
+        elif charges_per_month >= 0.3:
             frequency = "Quarterly"
-            monthly_cost = avg_amount / 3
+            monthly_cost = avg_amount / 3.0
         else:
             frequency = "Yearly"
-            monthly_cost = avg_amount / 12
+            monthly_cost = avg_amount / 12.0
             
         results.append({
             "description": txs[0].description,

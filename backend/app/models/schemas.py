@@ -26,6 +26,9 @@ class UploadSummaryResponse(BaseModel):
     total_transactions: int
     total_spent: float
     category_breakdown: Dict[str, int]
+    new_transactions: int
+    duplicate_transactions: int
+    total_in_file: int
 
 class PaginatedTransactionsResponse(BaseModel):
     transactions: List[TransactionResponse]

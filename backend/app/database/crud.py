@@ -2,9 +2,21 @@ from sqlalchemy.orm import Session
 from .db import Transaction
 from typing import List, Dict, Any, Tuple
 
-def create_transactions(db: Session, transactions: List[Dict[str, Any]]) -> List[Transaction]:
+def create_transactions(db: Session, transactions: List[Dict[str, Any]]) -> Tuple[List[Transaction], int]:
     db_transactions = []
+    duplicate_count = 0
     for tx in transactions:
+        exists = db.query(Transaction).filter(
+            Transaction.date == tx['date'],
+            Transaction.description == tx['description'],
+            Transaction.amount == tx['amount'],
+            Transaction.transaction_type == tx['transaction_type']
+        ).first()
+        
+        if exists:
+            duplicate_count += 1
+            continue
+            
         db_tx = Transaction(
             date=tx['date'],
             description=tx['description'],
@@ -20,7 +32,7 @@ def create_transactions(db: Session, transactions: List[Dict[str, Any]]) -> List
     db.commit()
     for db_tx in db_transactions:
         db.refresh(db_tx)
-    return db_transactions
+    return db_transactions, duplicate_count
 
 def get_transactions_paginated(db: Session, skip: int = 0, limit: int = 100, category: str = None, transaction_type: str = None) -> Tuple[List[Transaction], int]:
     query = db.query(Transaction)

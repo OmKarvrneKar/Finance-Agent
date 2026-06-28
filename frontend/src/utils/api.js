@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-// Ensure this points to the backend port specified in the terminal (8001) or Vercel env var
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001/api';
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8001/api";
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: BASE_URL,
 });
 
 export const fetchSubscriptions = async () => {

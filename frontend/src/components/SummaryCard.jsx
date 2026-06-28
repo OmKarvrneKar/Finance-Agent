@@ -13,9 +13,9 @@ const SummaryCard = ({ title, value, icon: Icon, isCurrency = false, isIncome = 
   };
 
   return (
-    <div className="card" style={{ padding: '20px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+    <div className="card" style={{ padding: '24px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
       <div>
-        <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           {title}
         </div>
         <div style={valueStyle}>
@@ -24,12 +24,12 @@ const SummaryCard = ({ title, value, icon: Icon, isCurrency = false, isIncome = 
       </div>
       {Icon && (
         <div style={{ 
-          padding: '12px', 
-          backgroundColor: 'var(--bg-color)', 
-          borderRadius: '50%',
-          color: 'var(--primary-blue)'
+          padding: '10px', 
+          backgroundColor: 'var(--bg-secondary)', 
+          borderRadius: 'var(--radius-full)',
+          color: 'var(--text-main)'
         }}>
-          <Icon size={24} />
+          <Icon size={20} />
         </div>
       )}
     </div>

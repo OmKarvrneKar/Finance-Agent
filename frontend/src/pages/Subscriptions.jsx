@@ -27,11 +27,11 @@ const Subscriptions = () => {
 
   return (
     <div className="layout-container">
-      <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '2rem', color: 'var(--primary-blue)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div className="page-header">
+        <h1 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Repeat size={28} /> Subscriptions & Recurring
         </h1>
-        <p style={{ color: 'var(--text-muted)' }}>Automatically detected recurring expenses and their estimated costs.</p>
+        <p className="page-description">Automatically detected recurring expenses and their estimated costs.</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px', marginBottom: '32px' }}>
@@ -41,11 +41,14 @@ const Subscriptions = () => {
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '64px', color: 'var(--text-muted)' }}>Loading subscriptions...</div>
+        <div style={{ textAlign: 'center', padding: '64px', color: 'var(--text-muted)' }}>
+          <div className="skeleton" style={{ height: '200px', width: '100%', marginBottom: '20px' }}></div>
+          <div className="skeleton" style={{ height: '200px', width: '100%', marginBottom: '20px' }}></div>
+        </div>
       ) : subscriptions.length === 0 ? (
-        <div className="card" style={{ textAlign: 'center', padding: '64px 24px', backgroundColor: '#fafafa' }}>
+        <div className="card" style={{ textAlign: 'center', padding: '64px 24px', backgroundColor: 'var(--bg-secondary)' }}>
           <Repeat size={48} color="var(--text-muted)" style={{ margin: '0 auto 16px', opacity: 0.5 }} />
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>No recurring subscriptions detected yet.</h2>
+          <h2 style={{ fontSize: '1.25rem', marginBottom: '8px', color: 'var(--text-main)' }}>No recurring subscriptions detected yet.</h2>
           <p style={{ color: 'var(--text-muted)' }}>Upload more months of bank statements to improve detection accuracy.</p>
         </div>
       ) : (
@@ -53,25 +56,25 @@ const Subscriptions = () => {
           {subscriptions.map((sub, idx) => (
             <div key={idx} className="card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <h3 style={{ fontSize: '1.1rem', margin: 0, fontWeight: 600 }}>{sub.description}</h3>
+                <h3 style={{ fontSize: '1.1rem', margin: 0, fontWeight: 600, color: 'var(--text-main)' }}>{sub.description}</h3>
                 <CategoryBadge category={sub.category} />
               </div>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', backgroundColor: '#fafafa', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', backgroundColor: 'var(--bg-secondary)', padding: '12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Frequency</div>
-                  <div style={{ fontWeight: 500 }}>{sub.frequency}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Frequency</div>
+                  <div style={{ fontWeight: 500, color: 'var(--text-main)' }}>{sub.frequency}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Avg Charge</div>
-                  <div style={{ fontWeight: 500 }}>₹{sub.average_amount.toLocaleString('en-IN')}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Avg Charge</div>
+                  <div style={{ fontWeight: 500, color: 'var(--text-main)' }}>₹{sub.average_amount.toLocaleString('en-IN')}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Est. Monthly</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Est. Monthly</div>
                   <div style={{ fontWeight: 600, color: 'var(--debit-text)' }}>₹{sub.estimated_monthly_cost.toLocaleString('en-IN')}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Est. Annual</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Est. Annual</div>
                   <div style={{ fontWeight: 600, color: 'var(--debit-text)' }}>₹{sub.estimated_annual_cost.toLocaleString('en-IN')}</div>
                 </div>
               </div>

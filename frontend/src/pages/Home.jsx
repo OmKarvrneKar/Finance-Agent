@@ -62,43 +62,35 @@ const Home = () => {
 
   return (
     <div className="layout-container">
-      <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '2rem', color: 'var(--primary-blue)', marginBottom: '8px' }}>Statement Upload</h1>
-        <p style={{ color: 'var(--text-muted)' }}>Upload your bank statement CSV to automatically categorize your transactions using AI.</p>
+      <div className="page-header">
+        <h1 className="page-title">Statement Upload</h1>
+        <p className="page-description">Upload your bank statement CSV to automatically categorize your transactions using AI.</p>
       </div>
 
       {!result && !loading && (
         <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
           <div 
             {...getRootProps()} 
-            style={{
-              border: `2px dashed ${isDragActive ? 'var(--primary-blue)' : 'var(--border-color)'}`,
-              borderRadius: '8px',
-              padding: '48px 24px',
-              textAlign: 'center',
-              backgroundColor: isDragActive ? 'rgba(24, 95, 165, 0.05)' : '#fafafa',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              marginBottom: '24px'
-            }}
+            className={`upload-zone ${isDragActive ? 'active' : ''}`}
+            style={{ marginBottom: '24px' }}
           >
             <input {...getInputProps()} />
-            <Upload size={48} color={isDragActive ? 'var(--primary-blue)' : 'var(--text-muted)'} style={{ margin: '0 auto 16px' }} />
+            <Upload size={48} color={isDragActive ? 'var(--accent-color)' : 'var(--text-muted)'} style={{ margin: '0 auto 16px' }} />
             {file ? (
               <div>
-                <FileText size={24} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px', color: 'var(--primary-blue)' }} />
-                <span style={{ fontWeight: 500, color: 'var(--text-main)' }}>{file.name}</span>
+                <FileText size={24} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px', color: 'var(--text-main)' }} />
+                <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>{file.name}</span>
               </div>
             ) : (
               <div>
-                <p style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '8px' }}>Drag & drop your CSV file here</p>
+                <p style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-main)' }}>Drag & drop your CSV file here</p>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>or click to select file</p>
               </div>
             )}
           </div>
 
           {error && (
-            <div style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca', padding: '12px 16px', borderRadius: '6px', color: '#b91c1c', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
+            <div className="alert-error" style={{ marginBottom: '24px' }}>
               <AlertCircle size={20} />
               <span>{error}</span>
             </div>
@@ -106,7 +98,7 @@ const Home = () => {
 
           <button 
             className="btn-primary" 
-            style={{ opacity: !file ? 0.5 : 1, width: '100%', padding: '14px', fontSize: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+            style={{ opacity: !file ? 0.5 : 1, width: '100%', padding: '14px', fontSize: '1rem' }}
             onClick={handleUpload}
             disabled={!file}
           >
@@ -118,21 +110,23 @@ const Home = () => {
 
       {loading && (
         <div className="card" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', padding: '64px 24px' }}>
-          <Loader size={48} color="var(--primary-blue)" style={{ margin: '0 auto 24px', animation: 'spin 2s linear infinite' }} />
-          <h2 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Categorizing your transactions...</h2>
-          <p style={{ color: 'var(--text-muted)' }}>Our AI is analyzing each transaction to assign accurate categories. This may take a moment.</p>
+          <Loader size={48} color="var(--accent-color)" style={{ margin: '0 auto 24px', animation: 'spin 2s linear infinite' }} />
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Categorizing transactions...</h2>
+          <p style={{ color: 'var(--text-muted)' }}>Our AI is analyzing each transaction. This may take a moment.</p>
         </div>
       )}
 
       {result && (
         <div>
-          <div style={{ backgroundColor: '#ecfdf5', border: '1px solid #a7f3d0', padding: '16px', borderRadius: '8px', color: '#047857', display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+          <div className="alert-success" style={{ marginBottom: '32px' }}>
             <CheckCircle size={24} />
-            <div>
+            <div style={{ flex: 1 }}>
               <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Processing Complete!</h3>
               <p style={{ margin: 0, opacity: 0.9 }}>Successfully imported and categorized your bank statement.</p>
             </div>
-            <button onClick={reset} style={{ marginLeft: 'auto', backgroundColor: 'transparent', color: '#047857', textDecoration: 'underline', fontWeight: 600 }}>Upload another</button>
+            <button onClick={reset} className="btn-secondary" style={{ backgroundColor: 'transparent', border: '1px solid var(--credit-border)', color: 'var(--credit-text)' }}>
+              Upload another
+            </button>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px', marginBottom: '32px' }}>
@@ -142,15 +136,15 @@ const Home = () => {
           </div>
 
           <div className="card">
-            <h3 style={{ marginBottom: '24px', fontSize: '1.25rem' }}>Category Breakdown</h3>
+            <h3 style={{ marginBottom: '24px', fontSize: '1.25rem', fontWeight: 600 }}>Category Breakdown</h3>
             <div style={{ height: '400px', width: '100%' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={result.chartData} layout="vertical" margin={{ top: 5, right: 30, left: 100, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
-                  <XAxis type="number" />
-                  <YAxis dataKey="name" type="category" width={90} tick={{ fontSize: 12 }} />
-                  <Tooltip cursor={{ fill: 'rgba(0,0,0,0.05)' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} />
-                  <Bar dataKey="count" fill="var(--primary-blue)" radius={[0, 4, 4, 0]} name="Transactions" />
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--border-color)" />
+                  <XAxis type="number" stroke="var(--text-muted)" />
+                  <YAxis dataKey="name" type="category" width={90} tick={{ fill: 'var(--text-muted)', fontSize: 12 }} stroke="none" />
+                  <Tooltip cursor={{ fill: 'rgba(0,0,0,0.03)' }} contentStyle={{ borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)' }} />
+                  <Bar dataKey="count" fill="var(--text-main)" radius={[0, 4, 4, 0]} name="Transactions" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

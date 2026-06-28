@@ -61,23 +61,23 @@ const AskAI = () => {
 
   return (
     <div className="layout-container" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)', paddingBottom: '24px' }}>
-      <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '2rem', color: 'var(--primary-blue)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <div className="page-header">
+        <h1 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Sparkles size={28} /> Ask AI Finance Agent
         </h1>
-        <p style={{ color: 'var(--text-muted)' }}>Ask questions about your spending, income, or transaction history in plain English.</p>
+        <p className="page-description">Ask questions about your spending, income, or transaction history in plain English.</p>
       </div>
 
       <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
         
         {/* Chat Messages Area */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', backgroundColor: '#fafafa' }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px', backgroundColor: 'var(--bg-color)' }}>
           
           {messages.length === 0 && (
             <div style={{ margin: 'auto', textAlign: 'center', maxWidth: '600px' }}>
-              <div style={{ backgroundColor: 'var(--card-bg)', padding: '32px', borderRadius: '12px', border: '1px solid var(--border-color)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
-                <Bot size={48} color="var(--primary-blue)" style={{ margin: '0 auto 16px' }} />
-                <h2 style={{ marginBottom: '16px', fontSize: '1.25rem' }}>Hello! I'm your AI Finance Agent.</h2>
+              <div style={{ backgroundColor: 'var(--card-bg)', padding: '32px', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-sm)' }}>
+                <Bot size={48} color="var(--accent-color)" style={{ margin: '0 auto 16px' }} />
+                <h2 style={{ marginBottom: '16px', fontSize: '1.25rem', color: 'var(--text-main)' }}>Hello! I'm your AI Finance Agent.</h2>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '24px', lineHeight: 1.5 }}>
                   I can analyze your transactions, compare spending across months, and find subscriptions. Try asking one of the questions below.
                 </p>
@@ -86,7 +86,8 @@ const AskAI = () => {
                     <button 
                       key={i}
                       onClick={() => handleSend(q)}
-                      style={{ padding: '8px 16px', backgroundColor: '#eef2ff', color: 'var(--primary-blue)', border: '1px solid #c7d2fe', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: 500, transition: 'all 0.2s ease' }}
+                      className="btn-secondary"
+                      style={{ padding: '8px 16px', borderRadius: 'var(--radius-full)', fontSize: '0.875rem' }}
                     >
                       {q}
                     </button>

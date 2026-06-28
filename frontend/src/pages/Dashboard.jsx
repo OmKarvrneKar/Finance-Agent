@@ -4,7 +4,7 @@ import { getAllTransactions } from '../utils/api';
 import SummaryCard from '../components/SummaryCard';
 import { List, ArrowDownCircle, ArrowUpCircle, Wallet } from 'lucide-react';
 
-const COLORS = ['#185FA5', '#047857', '#b45309', '#b91c1c', '#6d28d9', '#0369a1', '#a21caf', '#0f766e', '#be123c'];
+const COLORS = ['#3B82F6', '#059669', '#D97706', '#DC2626', '#7C3AED', '#0284C7', '#C026D3', '#0D9488', '#E11D48'];
 
 const Dashboard = () => {
   const [data, setData] = useState({
@@ -86,8 +86,8 @@ const Dashboard = () => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div style={{ backgroundColor: 'white', padding: '12px', border: '1px solid var(--border-color)', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
-          <p style={{ margin: '0 0 8px', fontWeight: 600 }}>{payload[0].name}</p>
+        <div style={{ backgroundColor: 'var(--card-bg)', padding: '12px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-md)' }}>
+          <p style={{ margin: '0 0 8px', fontWeight: 600, color: 'var(--text-main)' }}>{payload[0].name}</p>
           <p style={{ margin: 0, color: 'var(--text-muted)' }}>
             ₹{Number(payload[0].value).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
@@ -99,17 +99,18 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="layout-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-        <div style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>Loading dashboard...</div>
+      <div className="layout-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div className="skeleton" style={{ height: '80px', width: '100%' }}></div>
+        <div className="skeleton" style={{ height: '300px', width: '100%' }}></div>
       </div>
     );
   }
 
   return (
     <div className="layout-container">
-      <div style={{ marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '2rem', color: 'var(--primary-blue)', marginBottom: '8px' }}>Financial Dashboard</h1>
-        <p style={{ color: 'var(--text-muted)' }}>Overview of your spending habits and financial health.</p>
+      <div className="page-header">
+        <h1 className="page-title">Financial Dashboard</h1>
+        <p className="page-description">Overview of your spending habits and financial health.</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '32px' }}>
@@ -122,7 +123,7 @@ const Dashboard = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: '24px' }}>
         
         <div className="card">
-          <h3 style={{ marginBottom: '8px', fontSize: '1.25rem' }}>Current Month Spending</h3>
+          <h3 style={{ marginBottom: '8px', fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-main)' }}>Current Month Spending</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '24px' }}>Breakdown by category for the current calendar month.</p>
           
           {data.categoryData.length > 0 ? (
@@ -155,7 +156,7 @@ const Dashboard = () => {
         </div>
 
         <div className="card">
-          <h3 style={{ marginBottom: '8px', fontSize: '1.25rem' }}>Top 5 Spending Categories</h3>
+          <h3 style={{ marginBottom: '8px', fontSize: '1.15rem', fontWeight: 600, color: 'var(--text-main)' }}>Top 5 Spending Categories</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '24px' }}>Highest expenses across all time.</p>
           
           {data.topCategories.length > 0 ? (
@@ -163,10 +164,10 @@ const Dashboard = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.topCategories} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                  <YAxis width={80} tick={{ fontSize: 12 }} tickFormatter={(val) => `₹${val}`} />
-                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
-                  <Bar dataKey="amount" fill="var(--primary-blue)" radius={[4, 4, 0, 0]} name="Amount (₹)" />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'var(--text-muted)' }} stroke="var(--border-color)" />
+                  <YAxis width={80} tick={{ fontSize: 12, fill: 'var(--text-muted)' }} tickFormatter={(val) => `₹${val}`} stroke="none" />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.03)' }} />
+                  <Bar dataKey="amount" fill="var(--accent-color)" radius={[4, 4, 0, 0]} name="Amount (₹)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

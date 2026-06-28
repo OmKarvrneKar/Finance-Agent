@@ -42,12 +42,12 @@ const Transactions = () => {
 
   return (
     <div className="layout-container">
-      <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '2rem', color: 'var(--primary-blue)', marginBottom: '8px' }}>Transactions</h1>
-          <p style={{ color: 'var(--text-muted)' }}>View and filter all your categorized transactions.</p>
+          <h1 className="page-title">Transactions</h1>
+          <p className="page-description">View and filter all your categorized transactions.</p>
         </div>
-        <button onClick={fetchTransactions} className="btn-primary" style={{ backgroundColor: 'transparent', color: 'var(--primary-blue)', border: '1px solid var(--border-color)', padding: '8px 16px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <button onClick={fetchTransactions} className="btn-secondary" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <RefreshCw size={16} /> Refresh
         </button>
       </div>

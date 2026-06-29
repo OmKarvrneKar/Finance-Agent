@@ -26,7 +26,7 @@ export const getTransactions = async (page = 1, limit = 10, category = '', type 
   const params = new URLSearchParams({ page, limit });
   if (category) params.append('category', category);
   if (type) params.append('transaction_type', type);
-  
+
   const response = await api.get(`/transactions?${params.toString()}`);
   return response.data;
 };
